@@ -13,8 +13,8 @@ import EditCustomer from "./components/customers/EditCustomer";
 import Employees from "./components/employees/Employees";
 import EditEmployee from "./components/employees/EditEmployee";
 
-import Donuts from "./donuts/Donuts";
-import EditDonut from "./donuts/EditDonut";
+import Donuts from "./components/donuts/Donuts";
+import EditDonut from "./components/donuts/EditDonut";
 
 import Sales from "./components/sales/Sales";
 
