@@ -1,0 +1,146 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  background-color: rgb(24,25,26);
+  color: white;
+  padding: 1% 3%;
+}
+
+nav ul{
+  display: flex;  
+}
+
+li{
+  padding-right: 10px;
+}
+
+
+
+ul{
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+a:hover{
+  color: red;
+}
+
+/* --------------- TYPOGRAPHY ---------------*/
+
+header h1 {
+  font-size: 3em;
+}
+
+h2{
+  text-align: center;
+  padding: 1%;
+}
+
+/* --------------- TABLE ---------------*/
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background-color: rgb(32, 34, 35);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+tr:hover {
+  background-color: #524f4f;
+}
+
+
+
+/* CLASSES */
+
+.home-page p{
+  margin: 1% 0;
+  font-size: large;
+}
+
+
+
+.homepage-divider{
+  margin: 3% 0;
+}
+
+.header-icon-title{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+}
+
+
+/* --------------------------- FORMS ---------------------*/
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  margin: 1% 0;
+}
+
+.submit-button {
+  padding: 10px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1%;
+}
+
+.submit-button:hover {
+  background-color: #0f24be;
+}
+
+
+.new-existing-customers-form{
+  display: flex;
+  flex-direction: column;
+}
