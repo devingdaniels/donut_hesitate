@@ -1,13 +1,9 @@
 import { useState } from "react";
-
-// Icons
+import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
-
-// Components
 import AddEmployee from "./AddEmployee";
-
-import { useNavigate } from "react-router-dom";
+import { toastify } from "../../utilities/toastify";
 
 function Employees({}) {
   const navigate = useNavigate();
@@ -31,14 +27,12 @@ function Employees({}) {
 
   const editEmployee = (employee) => {
     // This can either redirect to a new page for editing the employee information or we can do in-line editing
-    console.log("Employee before edit: ", employee);
     navigate("edit-employees", { state: employee });
   };
 
   const deleteEmployee = (employee) => {
     // This can either redirect to a new page for editing the employees information or we can do in-line editing
-    alert("delete employee from Db");
-    console.log(employee);
+    toastify(`Deleting ${employee.employee_name}...`);
   };
 
   return (
@@ -62,10 +56,10 @@ function Employees({}) {
                 <td>{employee.employee_name}</td>
                 <td>{employee.shift_worked}</td>
                 <td onClick={() => editEmployee(employee)}>
-                  <AiOutlineEdit />
+                  <AiOutlineEdit size={"25px"} className="edit-row-icon" />
                 </td>
                 <td onClick={() => deleteEmployee(employee)}>
-                  <AiOutlineDelete />
+                  <AiOutlineDelete size={"25px"} className="delete-row-icon" />
                 </td>
               </tr>
             ))}

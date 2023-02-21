@@ -1,13 +1,9 @@
 import { useState } from "react";
-
-// Icons
+import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
-
-// Components
 import AddCustomer from "./AddCustomer";
-
-import { useNavigate } from "react-router-dom";
+import { toastify } from "../../utilities/toastify";
 
 function Customers({}) {
   const navigate = useNavigate();
@@ -34,14 +30,13 @@ function Customers({}) {
 
   const editCustomer = (customer) => {
     // This can either redirect to a new page for editing the customer information or we can do in-line editing
-    console.log("Customer before edit: ", customer);
+
     navigate("edit-customer", { state: customer });
   };
 
   const deleteCustomer = (customer) => {
     // This can either redirect to a new page for editing the customer information or we can do in-line editing
-    alert("delete customer from Db");
-    console.log(customer);
+    toastify(`Deleting ${customer.customer_name}...`);
   };
 
   return (
@@ -67,10 +62,10 @@ function Customers({}) {
                 <td>{customer.email}</td>
                 <td>{customer.phone_number}</td>
                 <td onClick={() => editCustomer(customer)}>
-                  <AiOutlineEdit />
+                  <AiOutlineEdit size={"25px"} className="edit-row-icon" />
                 </td>
                 <td onClick={() => deleteCustomer(customer)}>
-                  <AiOutlineDelete />
+                  <AiOutlineDelete size={"25px"} className="delete-row-icon" />
                 </td>
               </tr>
             ))}

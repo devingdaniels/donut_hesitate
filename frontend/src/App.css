@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
 *{
   box-sizing: border-box;
   margin: 0;
@@ -7,30 +9,69 @@
 html{
   background-color: rgb(24,25,26);
   color: white;
-  padding: 1% 3%;
+  padding: 0% 3%;
+  font-family: 'IBM Plex Mono', monospace;
 }
+
+header{
+  display: flex;
+}
+
+.header-item{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.header-item:first-child > span { margin-right: auto; }
+
+.header-item:last-child  > span { margin-left: auto;  }
 
 nav ul{
   display: flex;  
 }
 
-li{
-  padding-right: 10px;
+nav li:hover{
+  transform: translateY(-3px);
+  transition-duration: 0.2s;
 }
 
-
-
-ul{
-  list-style: none;
-}
 
 a{
   text-decoration: none;
   color: white;
 }
 
-a:hover{
+nav a.active{
   color: red;
+}
+
+a:hover{
+  color: red;  
+}
+
+@keyframes rotate
+{
+0%   {}
+100% {transform: rotateY(-360deg);}
+}
+@-webkit-keyframes rotate
+{
+0%   {}
+100% {-webkit-transform: rotate(-360deg);}
+}
+
+.donut-icon{
+  animation: rotate 10s linear infinite; 
+}
+
+.donut-icon:hover{
+  cursor: pointer;
+}
+
+
+header h1, .donut-icon{
+  margin-top: 20px;
 }
 
 /* --------------- TYPOGRAPHY ---------------*/
@@ -76,27 +117,7 @@ tr:hover {
 
 /* CLASSES */
 
-.home-page p{
-  margin: 1% 0;
-  font-size: large;
-}
-
-
-
-.homepage-divider{
-  margin: 3% 0;
-}
-
-.header-icon-title{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  
-}
-
-
 /* --------------------------- FORMS ---------------------*/
-
 form {
   display: flex;
   flex-direction: column;
@@ -107,13 +128,7 @@ form {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  width: 100%;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 input {
@@ -122,6 +137,13 @@ input {
   border-radius: 5px;
   width: 100%;
   margin: 1% 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .submit-button {
@@ -139,8 +161,48 @@ input {
   background-color: #0f24be;
 }
 
-
 .new-existing-customers-form{
   display: flex;
   flex-direction: column;
+}
+
+
+/* -------------------------- HOME PAGE ------------------------ */
+
+.homepage-about{
+  width: 50%;
+  margin: auto;
+  padding: 2% 2% 0 2%;
+  line-height: 2.5rem;
+}
+
+.homepage-image-container{
+  display: flex;
+  justify-content: space-around;
+  padding: 1% 1% 3% 1%;
+}
+
+.homepage-image-container h3{
+  text-align: center;
+  margin-bottom: 2%;
+}
+
+.homepage-divider{
+  margin: 2% 0;
+}
+
+
+
+
+/* GLOBAL CLASSES */
+
+.edit-row-icon:hover{
+  color: green;
+  cursor: pointer;
+  
+}
+
+.delete-row-icon:hover{
+  color: red;
+  cursor: pointer;
 }

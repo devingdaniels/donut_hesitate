@@ -1,37 +1,92 @@
-import React from "react";
-
-import { Link } from "react-router-dom";
-
-// Images
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Donut from "../images/donut.png";
 
+import "../styles/siteMenu.css";
+
+import { slide as Menu } from "react-burger-menu";
+
 function Header() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [active, setActive] = useState("");
+
+  const handleClick = (event) => {
+    setActive(event.target.id);
+  };
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setActive("1");
+    }
+  });
+
   return (
-    <header className="header-icon-title">
-      <img src={Donut} width={100} height={100}></img>
-      <h1>Donut Hesitate</h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/customers">Customers</Link>
-          </li>
-          <li>
-            <Link to="/employees">Employees</Link>
-          </li>
-          <li>
-            <Link to="/sales">Sales</Link>
-          </li>
-          <li>
-            <Link to="/sales-detail">Sales Detail</Link>
-          </li>
-          <li>
-            <Link to="/donuts">Donuts</Link>
-          </li>
-        </ul>
-      </nav>
+    <header>
+      <div className="header-item">
+        <img
+          className="donut-icon"
+          onClick={() => {
+            navigate("/");
+          }}
+          src={Donut}
+          width={50}
+          height={50}
+        ></img>
+      </div>
+      <h1 className="header-item">Donut Hesitate</h1>
+      <div className="header-item">
+        <Menu right width={280}>
+          <Link
+            onClick={handleClick}
+            className={active === "1" ? "active" : undefined}
+            id={"1"}
+            to="/"
+          >
+            Home
+          </Link>
+          <Link
+            onClick={handleClick}
+            className={active === "2" ? "active" : undefined}
+            id={"2"}
+            to="/customers"
+          >
+            Customers
+          </Link>
+          <Link
+            onClick={handleClick}
+            className={active === "3" ? "active" : undefined}
+            id={"3"}
+            to="/employees"
+          >
+            Employees
+          </Link>
+          <Link
+            onClick={handleClick}
+            className={active === "4" ? "active" : undefined}
+            id={"4"}
+            to="/sales"
+          >
+            Sales
+          </Link>
+          <Link
+            onClick={handleClick}
+            className={active === "5" ? "active" : undefined}
+            id={"5"}
+            to="/sales-detail"
+          >
+            Sales Detail
+          </Link>
+          <Link
+            onClick={handleClick}
+            className={active === "6" ? "active" : undefined}
+            id={"6"}
+            to="/donuts"
+          >
+            Donuts
+          </Link>
+        </Menu>
+      </div>
     </header>
   );
 }

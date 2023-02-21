@@ -1,24 +1,17 @@
-import "./App.css";
-
-// Routing
 import { Routes, Route } from "react-router-dom";
-
-// Components
 import Header from "./components/Header.js";
 import HomePage from "./components/HomePage";
-
 import Customers from "./components/customers/Customers";
 import EditCustomer from "./components/customers/EditCustomer";
-
 import Employees from "./components/employees/Employees";
 import EditEmployee from "./components/employees/EditEmployee";
-
 import Donuts from "./components/donuts/Donuts";
 import EditDonut from "./components/donuts/EditDonut";
-
 import Sales from "./components/sales/Sales";
-
 import SalesDetails from "./components/sales_details/SalesDetails";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
   return (
@@ -35,6 +28,7 @@ function App() {
         <Route path="/donuts" element={<Donuts />} />
         <Route path="/donuts/edit-donut" element={<EditDonut />} />
       </Routes>
+      <ToastContainer />
     </>
   );
 }

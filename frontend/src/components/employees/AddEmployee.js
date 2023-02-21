@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { toastify } from "../../utilities/toastify";
 
 function AddEmployee() {
   const [employee, setEmployee] = useState({
-    employee_name: null,
-    shift_worked: null,
+    employee_name: "",
+    shift_worked: "",
   });
 
   const addEmployee = (e) => {
     // Prevent page reload
     e.preventDefault();
-    alert("Add Employee to DB");
-    console.log(employee);
+    toastify(`Successfully added ${employee.employee_name}...`);
+    setEmployee({
+      employee_name: "",
+      shift_worked: "",
+    });
   };
 
   return (
@@ -19,6 +23,7 @@ function AddEmployee() {
       <form onSubmit={addEmployee} className="create-data-form">
         <input
           placeholder="Name..."
+          value={employee.employee_name}
           onChange={(e) =>
             setEmployee({ ...employee, employee_name: e.target.value })
           }
@@ -26,6 +31,7 @@ function AddEmployee() {
         ></input>
         <input
           placeholder="shift_worked..."
+          value={employee.shift_worked}
           onChange={(e) =>
             setEmployee({ ...employee, shift_worked: e.target.value })
           }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toastify } from "../../utilities/toastify";
 
 function EditEmployee() {
   const navigate = useNavigate();
@@ -15,9 +16,11 @@ function EditEmployee() {
     // Prevent page reload
     e.preventDefault();
 
-    console.log("Employee after edit: ");
-    console.log(updatedEmployee);
-
+    if (updatedEmployee.employee_name != location.state.employee_name) {
+      toastify(`Updating ${updatedEmployee.employee_name}...`);
+    } else {
+      toastify(`No changes to make...`);
+    }
     navigate("/employees");
   };
 

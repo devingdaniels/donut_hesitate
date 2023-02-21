@@ -1,13 +1,8 @@
 import { useState } from "react";
-
-// Icons
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
-
-// Components
-import AddDonut from "./AddDonut";
-
 import { useNavigate } from "react-router-dom";
+import AddDonut from "./AddDonut";
 
 function Donuts({}) {
   const navigate = useNavigate();
@@ -41,6 +36,7 @@ function Donuts({}) {
 
   const deleteDonut = (donut) => {
     alert("delete donut from Db");
+
     console.log(donut);
   };
 

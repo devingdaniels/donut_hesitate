@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toastify } from "../../utilities/toastify";
 
 function EditCustomer() {
   const navigate = useNavigate();
@@ -16,10 +17,23 @@ function EditCustomer() {
     // Prevent page reload
     e.preventDefault();
 
-    console.log("Customer after edit: ");
-    console.log(updatedCustomer);
+    if (
+      updatedCustomer.customer_name != location.state.customer_name ||
+      updatedCustomer.email != location.state.email ||
+      updatedCustomer.phone_number != location.state.phone_number
+    ) {
+      toastify(`Successfully updated ${updatedCustomer.customer_name}...`);
+    } else {
+      toastify(`No changes to update...`);
+    }
 
     navigate("/customers");
+    setUpdatedCustomer({
+      id: "",
+      customer_name: "",
+      email: "",
+      phone_number: "",
+    });
   };
 
   return (
