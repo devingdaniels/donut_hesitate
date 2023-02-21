@@ -4,7 +4,7 @@ import Donut from "../images/donut.png";
 
 import "../styles/siteMenu.css";
 
-import { slide as Menu } from "react-burger-menu";
+import { elastic as Menu } from "react-burger-menu";
 
 function Header() {
   const location = useLocation();
@@ -19,7 +19,7 @@ function Header() {
     if (location.pathname === "/") {
       setActive("1");
     }
-  });
+  }, [location.pathname]);
 
   return (
     <header>
@@ -30,13 +30,14 @@ function Header() {
             navigate("/");
           }}
           src={Donut}
+          alt="donut icon"
           width={50}
           height={50}
         ></img>
       </div>
       <h1 className="header-item">Donut Hesitate</h1>
       <div className="header-item">
-        <Menu right width={280}>
+        <Menu right>
           <Link
             onClick={handleClick}
             className={active === "1" ? "active" : undefined}
