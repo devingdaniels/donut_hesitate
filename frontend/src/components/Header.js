@@ -64,6 +64,14 @@ function Header() {
           </Link>
           <Link
             onClick={handleClick}
+            className={active === "6" ? "active" : undefined}
+            id={"6"}
+            to="/donuts"
+          >
+            Donuts
+          </Link>
+          <Link
+            onClick={handleClick}
             className={active === "4" ? "active" : undefined}
             id={"4"}
             to="/sales"
@@ -77,14 +85,6 @@ function Header() {
             to="/sales-detail"
           >
             Sales Detail
-          </Link>
-          <Link
-            onClick={handleClick}
-            className={active === "6" ? "active" : undefined}
-            id={"6"}
-            to="/donuts"
-          >
-            Donuts
           </Link>
         </Menu>
       </div>
