@@ -191,7 +191,27 @@ input {
   margin: 2% 0;
 }
 
+/* -------------------- SALES PAGE --------------------*/
 
+.new-sale-form{
+text-align: center;
+}
+
+.add-customer-button
+{padding: 10px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1%;
+}
+
+
+.add-customer-button:hover {
+  background-color: #0f24be;
+}
 
 
 /* GLOBAL CLASSES */

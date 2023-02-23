@@ -65,7 +65,7 @@ function NewSale({ addNewSale }) {
   };
 
   return (
-    <div>
+    <div className="new-sale-form">
       <h2>New Sale</h2>
       <form onSubmit={newSale} className="create-data-form">
         <input
@@ -112,6 +112,7 @@ function NewSale({ addNewSale }) {
               <>
                 <button
                   type="button"
+                  className="add-customer-button"
                   onClick={() => setToggle((toggle) => !toggle)}
                 >
                   Cancel
@@ -121,6 +122,7 @@ function NewSale({ addNewSale }) {
               <>
                 <button
                   type="button"
+                  className="add-customer-button"
                   onClick={() => setToggle((toggle) => !toggle)}
                 >
                   Add Customer
