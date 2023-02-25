@@ -9,8 +9,7 @@ function Donuts({}) {
   const navigate = useNavigate();
   const [donuts, setDonuts] = useState([]);
 
-  const editDonut = (donut) => {
-    console.log("Donut before edit: ", donut);
+  const editDonut = async (donut) => {
     navigate("edit-donut", { state: donut });
   };
 
@@ -27,17 +26,18 @@ function Donuts({}) {
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get("http://localhost:8543/api/donuts");
-        const data = response.data;
-        setDonuts(data);
-      } catch (error) {
-        console.error(error);
-      }
+  const getDonuts = async () => {
+    try {
+      const response = await axios.get("http://localhost:8543/api/donuts");
+      const data = response.data;
+      setDonuts(data);
+    } catch (error) {
+      console.error(error);
     }
-    fetchData();
+  };
+
+  useEffect(() => {
+    getDonuts();
   }, []);
 
   return (
@@ -61,10 +61,10 @@ function Donuts({}) {
                 <td>{donut.donut_name}</td>
                 <td>$ {donut.price}</td>
                 <td onClick={() => editDonut(donut)}>
-                  <AiOutlineEdit className="edit-row-icon" />
+                  <AiOutlineEdit size={"25px"} className="edit-row-icon" />
                 </td>
                 <td onClick={() => deleteDonut(donut)}>
-                  <AiOutlineDelete className="delete-row-icon" />
+                  <AiOutlineDelete size={"25px"} className="delete-row-icon" />
                 </td>
               </tr>
             ))}

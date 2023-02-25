@@ -13,6 +13,10 @@ const db = require("./src/config/db");
 // Custom middleware error handler
 const { errorHandler } = require("./src/middleware/errorHandling");
 
+// Express middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use("/api/donuts", require("./src/routes/donutRoutes"));
 
 // Error middleware needs to be last .use()

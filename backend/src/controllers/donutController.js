@@ -35,13 +35,14 @@ const createDonut = asyncHandler(async (req, res) => {
 });
 
 const editDonut = asyncHandler(async (req, res) => {
-  res.status(200).json("donuts");
+  console.log("backend/src/controllers/donutcontroller/editDonut");
+  res.status(200).json(req.body);
 });
 
 const deleteDonut = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/donutcontroller/deleteDonut");
 
-  res.status(200).json(req.params);
+  res.status(200).json("req.params");
 });
 
 module.exports = {

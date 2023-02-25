@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import axios from "axios";
 function EditDonut() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -11,13 +11,19 @@ function EditDonut() {
     price: location.state.price,
   });
 
-  const updateDonut = (e) => {
+  const updateDonut = async (e) => {
     // Prevent page reload
     e.preventDefault();
-
-    console.log("Donut after edit: ");
-    console.log(updatedDonut);
-
+    try {
+      const response = await axios.put(
+        `http://localhost:8543/api/donuts/`,
+        updatedDonut
+      );
+      const data = response.data;
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
     navigate("/donuts");
   };
 
