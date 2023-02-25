@@ -4,6 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import AddDonut from "./AddDonut";
 import axios from "axios";
+import { toastify } from "../../utilities/toastify";
 
 function Donuts({}) {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Donuts({}) {
         { data: donut }
       );
       const data = response.data;
-      console.log(data);
+      toastify(`${donut.donut_name} (${data.id}) deleted succefully`);
     } catch (error) {
       console.error(error);
     }

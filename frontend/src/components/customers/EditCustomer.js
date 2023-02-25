@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toastify } from "../../utilities/toastify";
 
+import axios from "axios";
+
 function EditCustomer() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,16 +15,25 @@ function EditCustomer() {
     phone_number: location.state.phone_number,
   });
 
-  const updateCustomer = (e) => {
+  const updateCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
 
     if (
-      updatedCustomer.customer_name != location.state.customer_name ||
-      updatedCustomer.email != location.state.email ||
-      updatedCustomer.phone_number != location.state.phone_number
+      updatedCustomer.customer_name !== location.state.customer_name ||
+      updatedCustomer.email !== location.state.email ||
+      updatedCustomer.phone_number !== location.state.phone_number
     ) {
-      toastify(`Successfully updated ${updatedCustomer.customer_name}...`);
+      try {
+        const response = await axios.put(
+          `http://localhost:8543/api/customers/`,
+          updatedCustomer
+        );
+        const data = response.data;
+        toastify(`CustomerID: ${data.id} updated.`);
+      } catch (error) {
+        console.error(error);
+      }
     } else {
       toastify(`No changes to update...`);
     }

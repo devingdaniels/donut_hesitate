@@ -32,11 +32,11 @@ function HomePage() {
       <div className="homepage-image-container">
         <div>
           <h3>Schema</h3>
-          <img src={SchemaImage} width={600} height={400}></img>
+          <img src={SchemaImage} width={600} height={400} alt=""></img>
         </div>
         <div>
           <h3>ERD</h3>
-          <img src={ERD} width={600} height={400}></img>
+          <img src={ERD} width={600} height={400} alt=""></img>
         </div>
       </div>
     </section>

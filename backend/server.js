@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/donuts", require("./src/routes/donutRoutes"));
+app.use("/api/customers", require("./src/routes/customerRoutes"));
 
 // Error middleware needs to be last .use()
 // Called when there is an error on get, put, post, delete routes in /backend/src/controller

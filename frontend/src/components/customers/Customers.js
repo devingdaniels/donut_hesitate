@@ -1,43 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import AddCustomer from "./AddCustomer";
 import { toastify } from "../../utilities/toastify";
+import axios from "axios";
 
-function Customers({}) {
+function Customers() {
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState([
-    {
-      id: "1",
-      customer_name: "Sarah Jane",
-      email: "Sarah.Jane@gmail.com",
-      phone_number: "541-456-7890",
-    },
-    {
-      id: "2",
-      customer_name: "Ralphy Johnson",
-      email: "Ralphy.Johnson@gmail.com",
-      phone_number: "987-123-7890",
-    },
-    {
-      id: "3",
-      customer_name: "Pickle Rick",
-      email: "Pickle.Rick@gmail.com",
-      phone_number: "625-123-4321",
-    },
-  ]);
+  const [customers, setCustomers] = useState([]);
 
   const editCustomer = (customer) => {
-    // This can either redirect to a new page for editing the customer information or we can do in-line editing
-
     navigate("edit-customer", { state: customer });
   };
 
-  const deleteCustomer = (customer) => {
-    // This can either redirect to a new page for editing the customer information or we can do in-line editing
-    toastify(`Deleting ${customer.customer_name}...`);
+  const deleteCustomer = async (customer) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8543/api/donuts/${customer.id}`,
+        { data: customer }
+      );
+      const data = response.data;
+      toastify(`${data.customer_name} (${data.id}) deleted succefully`);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const getCustomers = async () => {
+    try {
+      const response = await axios.get("http://localhost:8543/api/customers");
+      const data = response.data;
+      setCustomers(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCustomers();
+  });
 
   return (
     <div>

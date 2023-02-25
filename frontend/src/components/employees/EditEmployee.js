@@ -16,7 +16,7 @@ function EditEmployee() {
     // Prevent page reload
     e.preventDefault();
 
-    if (updatedEmployee.employee_name != location.state.employee_name) {
+    if (updatedEmployee.employee_name !== location.state.employee_name) {
       toastify(`Updating ${updatedEmployee.employee_name}...`);
     } else {
       toastify(`No changes to make...`);

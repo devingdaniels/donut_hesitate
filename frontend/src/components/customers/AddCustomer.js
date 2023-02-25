@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { toastify } from "../../utilities/toastify";
 
+import axios from "axios";
+
 function AddCustomer() {
   const [customer, setCustomer] = useState({
     customer_name: "",
@@ -8,10 +10,23 @@ function AddCustomer() {
     phone_number: "",
   });
 
-  const addCustomer = (e) => {
+  const addCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
-    toastify(`Successfully added ${customer.customer_name}...`);
+    try {
+      const response = await axios.post(
+        `http://localhost:8543/api/customers/`,
+        customer
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        toastify(`${customer.customer_name} successfully added.`);
+      } else {
+        console.log(response.status);
+      }
+    } catch (error) {
+      console.error(error);
+    }
     setCustomer({
       customer_name: "",
       email: "",

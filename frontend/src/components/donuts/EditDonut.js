@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { toastify } from "../../utilities/toastify";
 function EditDonut() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,16 +15,30 @@ function EditDonut() {
   const updateDonut = async (e) => {
     // Prevent page reload
     e.preventDefault();
-    try {
-      const response = await axios.put(
-        `http://localhost:8543/api/donuts/`,
-        updatedDonut
-      );
-      const data = response.data;
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+
+    if (
+      updatedDonut.donut_name !== location.state.donut_name ||
+      updatedDonut.price !== location.state.price
+    ) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8543/api/donuts/`,
+          updatedDonut
+        );
+        const data = response.data;
+        if (response.status === 200) {
+          toastify(`${data.donut_name} (${data.donut_id}) updated succefully`);
+        } else {
+          console.log(data);
+          toastify(`Error updating ${data.donut_name} (${data.donut_id})`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      toastify("No changes to save...");
     }
+
     navigate("/donuts");
   };
 
