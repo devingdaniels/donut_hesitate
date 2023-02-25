@@ -1,44 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import AddDonut from "./AddDonut";
+import axios from "axios";
 
 function Donuts({}) {
   const navigate = useNavigate();
-  const [donuts, setDonuts] = useState([
-    {
-      donut_id: "1",
-      donut_name: "chocolate",
-      price: "2.5",
-    },
-    {
-      donut_id: "2",
-      donut_name: "strawberry",
-      price: "2.5",
-    },
-    {
-      donut_id: "3",
-      donut_name: "blueberry",
-      price: "2.5",
-    },
-    {
-      donut_id: "4",
-      donut_name: "mocha",
-      price: "3",
-    },
-  ]);
+  const [donuts, setDonuts] = useState([]);
 
   const editDonut = (donut) => {
     console.log("Donut before edit: ", donut);
     navigate("edit-donut", { state: donut });
   };
 
-  const deleteDonut = (donut) => {
-    alert("delete donut from Db");
-
-    console.log(donut);
+  const deleteDonut = async (donut) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8543/api/donuts/${donut.donut_id}`,
+        { data: donut }
+      );
+      const data = response.data;
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("http://localhost:8543/api/donuts");
+        const data = response.data;
+        setDonuts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -59,12 +59,12 @@ function Donuts({}) {
               <tr key={donut.donut_id}>
                 <td>{donut.donut_id}</td>
                 <td>{donut.donut_name}</td>
-                <td>{donut.price}</td>
+                <td>$ {donut.price}</td>
                 <td onClick={() => editDonut(donut)}>
-                  <AiOutlineEdit />
+                  <AiOutlineEdit className="edit-row-icon" />
                 </td>
                 <td onClick={() => deleteDonut(donut)}>
-                  <AiOutlineDelete />
+                  <AiOutlineDelete className="delete-row-icon" />
                 </td>
               </tr>
             ))}
