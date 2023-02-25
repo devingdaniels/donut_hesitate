@@ -31,7 +31,8 @@ const getDonuts = asyncHandler(async (req, res) => {
 });
 
 const createDonut = asyncHandler(async (req, res) => {
-  res.status(200).json("donuts");
+  console.log("backend/src/controllers/donutcontroller/createDonut");
+  res.status(200).json(req.body);
 });
 
 const editDonut = asyncHandler(async (req, res) => {
@@ -42,7 +43,7 @@ const editDonut = asyncHandler(async (req, res) => {
 const deleteDonut = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/donutcontroller/deleteDonut");
 
-  res.status(200).json("req.params");
+  res.status(200).json(req.params);
 });
 
 module.exports = {

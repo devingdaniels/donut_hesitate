@@ -13,7 +13,7 @@ const db = require("./src/config/db");
 // Custom middleware error handler
 const { errorHandler } = require("./src/middleware/errorHandling");
 
-// Express middleware
+// Express middleware [THIS IS NEEDED FOR PUT AND POST(?) BUT WHY?????]
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

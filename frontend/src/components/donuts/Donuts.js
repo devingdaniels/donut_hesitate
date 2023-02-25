@@ -10,6 +10,7 @@ function Donuts({}) {
   const [donuts, setDonuts] = useState([]);
 
   const editDonut = async (donut) => {
+    // edit-donut page renders form for updating donut info
     navigate("edit-donut", { state: donut });
   };
 
