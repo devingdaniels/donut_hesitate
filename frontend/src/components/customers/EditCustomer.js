@@ -18,7 +18,6 @@ function EditCustomer() {
   const updateCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
-
     if (
       updatedCustomer.customer_name !== location.state.customer_name ||
       updatedCustomer.email !== location.state.email ||

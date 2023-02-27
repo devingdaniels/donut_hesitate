@@ -1,39 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import AddEmployee from "./AddEmployee";
 import { toastify } from "../../utilities/toastify";
 
+import axios from "axios";
+
 function Employees({}) {
   const navigate = useNavigate();
-  const [employees, setEmployees] = useState([
-    {
-      employee_id: "1",
-      employee_name: "John Doe",
-      shift_worked: "2022-12-20",
-    },
-    {
-      employee_id: "2",
-      employee_name: "Steve Doe",
-      shift_worked: "2022-12-12",
-    },
-    {
-      employee_id: "3",
-      employee_name: "Eva Doe",
-      shift_worked: "2022-12-20",
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
 
   const editEmployee = (employee) => {
-    // This can either redirect to a new page for editing the employee information or we can do in-line editing
     navigate("edit-employees", { state: employee });
   };
 
-  const deleteEmployee = (employee) => {
-    // This can either redirect to a new page for editing the employees information or we can do in-line editing
-    toastify(`Deleting ${employee.employee_name}...`);
+  const deleteEmployee = async (employee) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8543/api/employees/${employee.employee_id}`,
+        { data: employee }
+      );
+      const data = response.data;
+      toastify(`Deleting ${data.employee_name} (${data.employee_id})...`);
+      console.log(data);
+    } catch (error) {
+      toastify(
+        `Error deleting ${employee.employee_name} (${employee.employee_id})...`
+      );
+      console.error(error);
+    }
   };
+
+  const getEmployees = async () => {
+    try {
+      const response = await axios.get("http://localhost:8543/api/employees");
+      const data = response.data;
+      setEmployees(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
 
   return (
     <div>

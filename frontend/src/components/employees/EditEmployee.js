@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toastify } from "../../utilities/toastify";
 
+import axios from "axios";
+
 function EditEmployee() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -12,12 +14,22 @@ function EditEmployee() {
     shift_worked: location.state.shift_worked,
   });
 
-  const updateEmployee = (e) => {
+  const updateEmployee = async (e) => {
     // Prevent page reload
     e.preventDefault();
 
     if (updatedEmployee.employee_name !== location.state.employee_name) {
       toastify(`Updating ${updatedEmployee.employee_name}...`);
+      try {
+        const response = await axios.put(
+          `http://localhost:8543/api/employees/`,
+          updatedEmployee
+        );
+        const data = response.data;
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     } else {
       toastify(`No changes to make...`);
     }

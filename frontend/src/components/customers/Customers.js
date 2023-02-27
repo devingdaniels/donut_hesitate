@@ -17,7 +17,7 @@ function Customers() {
   const deleteCustomer = async (customer) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8543/api/donuts/${customer.id}`,
+        `http://localhost:8543/api/customers/${customer.id}`,
         { data: customer }
       );
       const data = response.data;
@@ -40,7 +40,7 @@ function Customers() {
 
   useEffect(() => {
     getCustomers();
-  });
+  }, []);
 
   return (
     <div>

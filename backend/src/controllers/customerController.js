@@ -39,8 +39,8 @@ const editCustomer = asyncHandler(async (req, res) => {
 
 const deleteCustomer = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/customercontroller/deletecustomer");
-
-  res.status(200).json(req.params);
+  console.log(req.body);
+  res.status(200).json(req.body);
 });
 
 module.exports = {
