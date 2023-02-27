@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import AddCustomer from "../customers/AddCustomer";
+
+import { toastify } from "../../utilities/toastify";
 
 function NewSale({ addNewSale }) {
   const [toggle, setToggle] = useState(false);
 
   const [sale, setSale] = useState({
-    quantity_of_donuts_sold: null,
-    purchase_date: null,
-    sale_amount: null,
-    customer_id: null,
-    employee_id: null,
+    quantity_of_donuts_sold: "",
+    purchase_date: "",
+    sale_amount: "",
+    customer_id: "",
+    employee_id: "",
   });
 
   const [employees, setEmployees] = useState([
@@ -63,6 +65,10 @@ function NewSale({ addNewSale }) {
     alert("Add sale to DB");
     addNewSale(sale);
   };
+
+  useEffect(() => {
+    toastify("Add fetch for customers and employees");
+  }, []);
 
   return (
     <div className="new-sale-form">

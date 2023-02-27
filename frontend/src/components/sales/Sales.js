@@ -1,41 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Components
 import NewSale from "./NewSale";
+import axios from "axios";
 
 function Sales() {
-  const [sales, setSales] = useState([
-    {
-      sale_id: "1",
-      quantity_of_donuts_sold: "3",
-      purchase_date: "8/23/25",
-      sale_amount: "$4.99",
-      customer_id: "1",
-      employee_id: "3",
-    },
-    {
-      sale_id: "2",
-      quantity_of_donuts_sold: "12",
-      purchase_date: "12/23/25",
-      sale_amount: "$8.99",
-      customer_id: "2",
-      employee_id: "1",
-    },
-    {
-      sale_id: "3",
-      quantity_of_donuts_sold: "35",
-      purchase_date: "12/23/22",
-      sale_amount: "$21.99",
-      customer_id: "3",
-      employee_id: "2",
-    },
-  ]);
+  const [sales, setSales] = useState([]);
 
   const addNewSale = (sale) => {
     setSales((sales) => [...sales, sale]); // delete this
     console.log(sale);
-    // Make HTTP request to server which will add the sale to the database and return updated sales list
-    // Display loading symbol while this process takes place
   };
+
+  const getSales = async () => {
+    try {
+      const response = await axios.get("http://localhost:8543/api/sales");
+      const data = response.data;
+      setSales(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getSales();
+  }, []);
 
   return (
     <div>

@@ -4,10 +4,9 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import AddEmployee from "./AddEmployee";
 import { toastify } from "../../utilities/toastify";
-
 import axios from "axios";
 
-function Employees({}) {
+function Employees() {
   const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
 
