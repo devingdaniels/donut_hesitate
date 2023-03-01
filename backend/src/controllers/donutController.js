@@ -1,6 +1,8 @@
 // Handle erros on async functions
 const asyncHandler = require("express-async-handler");
 
+const db = require("./src/config/db");
+
 const getDonuts = asyncHandler(async (req, res) => {
   const donuts = [
     {
@@ -24,8 +26,6 @@ const getDonuts = asyncHandler(async (req, res) => {
       price: "2.29",
     },
   ];
-
-  // DELETE DONUT ARRAY ABOVE AND CODE SQL SELECT STATEMENT HERE
 
   res.status(200).json(donuts);
 });
