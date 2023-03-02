@@ -1,9 +1,10 @@
 // Handle erros on async functions
 const asyncHandler = require("express-async-handler");
 
-const db = require("./src/config/db");
+const db = require("../config/db");
 
 const getDonuts = asyncHandler(async (req, res) => {
+  console.log("backend/src/controllers/donutcontroller/getDonuts");
   const donuts = [
     {
       donut_id: "1",

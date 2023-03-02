@@ -2,8 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const PORT = 8543;
-// Database
-const db = require("./src/config/db");
 // Custom middleware error handler
 const { errorHandler } = require("./src/middleware/errorHandling");
 // Express middleware [THIS IS NEEDED FOR PUT AND POST(?) BUT WHY?????]
@@ -20,5 +18,5 @@ app.use("/api/sales", require("./src/routes/salesRoutes"));
 app.use(errorHandler);
 // Listener
 app.listen(PORT, () => {
-  console.log(`Express started on http://localhost:${PORT}`);
+  console.log(`Express listening on port ${PORT}...`);
 });
