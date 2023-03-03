@@ -1,46 +1,61 @@
 // Handle erros on async functions
 const asyncHandler = require("express-async-handler");
 
-const getCustomers = asyncHandler(async (req, res) => {
-  const customers = [
-    {
-      id: "1",
-      customer_name: "Sarah Jane",
-      email: "sarah.jane@gmail.com",
-      phone_number: "541-456-7890",
-    },
-    {
-      id: "2",
-      customer_name: "Ralphy Johnson",
-      email: "ralphy.johnson@gmail.com",
-      phone_number: "987-123-7890",
-    },
-    {
-      id: "3",
-      customer_name: "Pickle Rick",
-      email: "pickle.rick@gmail.com",
-      phone_number: "625-123-4321",
-    },
-  ];
-  // DELETE DONUT ARRAY ABOVE AND CODE SQL SELECT STATEMENT HERE
+const db = require("../config/db");
 
-  res.status(200).json(customers);
+const getCustomers = asyncHandler(async (req, res) => {
+  console.log("backend/src/controllers/customerController");
+  const query = "SELECT * FROM Customers;";
+
+  db.pool.query(query, (err, results) => {
+    res.status(200).json(results);
+  });
 });
 
 const createCustomer = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/customercontroller/createcustomer");
-  res.status(200).json(req.body);
+  const { customer_name, email, phone_number } = req.body;
+
+  const query = `INSERT INTO Customers (customer_name, email, phone_number) VALUES ('${customer_name}', '${email}', '${phone_number}')`;
+
+  // Execute the SQL insert statement
+  db.pool.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.status(200).json({ message: "Customer added successfully" });
+    }
+  });
 });
 
 const editCustomer = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/customercontroller/editcustomer");
-  res.status(200).json(req.body);
+  const { customer_id, customer_name, email, phone_number } = req.body;
+  console.log(customer_id, customer_name, email, phone_number);
+
+  const query = `UPDATE Customers SET customer_name = '${customer_name}', email = '${email}', phone_number = '${phone_number}' WHERE customer_id = ${customer_id}`;
+
+  db.pool.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.status(200).json({ message: "Customer added successfully" });
+    }
+  });
 });
 
 const deleteCustomer = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/customercontroller/deletecustomer");
-  console.log(req.body);
-  res.status(200).json(req.body);
+  const { customer_id } = req.body;
+  const query = `DELETE FROM Customers WHERE Customers.customer_id = ${customer_id}`;
+  // Execute the SQL insert statement
+  db.pool.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.status(200).json({ customer_id: customer_id });
+    }
+  });
 });
 
 module.exports = {

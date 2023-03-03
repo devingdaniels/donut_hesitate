@@ -11,28 +11,43 @@ function Customers() {
   const [customers, setCustomers] = useState([]);
 
   const editCustomer = (customer) => {
+    console.log("before Navigate: ", customer);
     navigate("edit-customer", { state: customer });
   };
 
   const deleteCustomer = async (customer) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8543/api/customers/${customer.id}`,
+        `${process.env.REACT_APP_API_STRING}/customers/${customer.customer_id}`,
         { data: customer }
       );
       const data = response.data;
-      toastify(`${data.customer_name} (${data.id}) deleted succefully`);
       console.log(data);
+      if (response.status === 200) {
+        toastify(`${data.customer_id} deleted succefully`);
+      } else {
+        toastify("Error deleting customer");
+        console.log(data);
+      }
     } catch (error) {
       console.error(error);
     }
+    getCustomers();
   };
 
   const getCustomers = async () => {
     try {
-      const response = await axios.get("http://localhost:8543/api/customers");
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_STRING}/customers`
+      );
+      console.log(response);
       const data = response.data;
-      setCustomers(data);
+      if (response.status === 200) {
+        setCustomers(data);
+      } else {
+        toastify("Error getting customers in backend");
+      }
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -59,8 +74,8 @@ function Customers() {
           </thead>
           <tbody>
             {customers.map((customer) => (
-              <tr key={customer.id}>
-                <td>{customer.id}</td>
+              <tr key={customer.customer_id}>
+                <td>{customer.customer_id}</td>
                 <td>{customer.customer_name}</td>
                 <td>{customer.email}</td>
                 <td>{customer.phone_number}</td>
@@ -76,7 +91,7 @@ function Customers() {
         </table>
       </section>
       <section>
-        <AddCustomer />
+        <AddCustomer getCustomers={getCustomers} />
       </section>
     </div>
   );

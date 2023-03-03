@@ -3,7 +3,7 @@ import { toastify } from "../../utilities/toastify";
 
 import axios from "axios";
 
-function AddCustomer() {
+function AddCustomer({ getCustomers }) {
   const [customer, setCustomer] = useState({
     customer_name: "",
     email: "",
@@ -15,13 +15,13 @@ function AddCustomer() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8543/api/customers/`,
+        `${process.env.REACT_APP_API_STRING}/customers`,
         customer
       );
       if (response.status === 200) {
-        const data = response.data;
         toastify(`${customer.customer_name} successfully added.`);
       } else {
+        toastify("New customer failed to insert.");
         console.log(response.status);
       }
     } catch (error) {
@@ -32,6 +32,8 @@ function AddCustomer() {
       email: "",
       phone_number: "",
     });
+    // Get updated list of customers
+    getCustomers();
   };
 
   return (

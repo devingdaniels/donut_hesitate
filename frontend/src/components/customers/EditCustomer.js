@@ -9,7 +9,7 @@ function EditCustomer() {
   const location = useLocation();
   // State
   const [updatedCustomer, setUpdatedCustomer] = useState({
-    id: location.state.id,
+    customer_id: location.state.customer_id,
     customer_name: location.state.customer_name,
     email: location.state.email,
     phone_number: location.state.phone_number,
@@ -18,6 +18,7 @@ function EditCustomer() {
   const updateCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
+    console.log(updatedCustomer);
     if (
       updatedCustomer.customer_name !== location.state.customer_name ||
       updatedCustomer.email !== location.state.email ||
@@ -25,25 +26,30 @@ function EditCustomer() {
     ) {
       try {
         const response = await axios.put(
-          `http://localhost:8543/api/customers/`,
+          `${process.env.REACT_APP_API_STRING}/customers`,
           updatedCustomer
         );
         const data = response.data;
-        toastify(`CustomerID: ${data.id} updated.`);
+        if (response.status === 200) {
+          toastify(`CustomerID: ${updatedCustomer.customer_id} updated`);
+        } else {
+          toastify(
+            `Error updating customer with ID: ${updatedCustomer.customer_id}`
+          );
+        }
       } catch (error) {
         console.error(error);
       }
     } else {
       toastify(`No changes to update...`);
     }
-
-    navigate("/customers");
     setUpdatedCustomer({
-      id: "",
+      customer_id: "",
       customer_name: "",
       email: "",
       phone_number: "",
     });
+    navigate("/customers");
   };
 
   return (
