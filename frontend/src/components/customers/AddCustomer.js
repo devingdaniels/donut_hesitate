@@ -13,11 +13,16 @@ function AddCustomer({ getCustomers }) {
   const addCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
+    // Get the API base string
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_STRING}/customers`,
-        customer
-      );
+      const response = await axios.post(`${URL}/customers`, customer);
       if (response.status === 200) {
         toastify(`${customer.customer_name} successfully added.`);
       } else {

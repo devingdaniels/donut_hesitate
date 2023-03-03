@@ -16,17 +16,24 @@ function Customers() {
   };
 
   const deleteCustomer = async (customer) => {
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_API_STRING}/customers/${customer.customer_id}`,
+        `${URL}/customers/${customer.customer_id}`,
         { data: customer }
       );
       const data = response.data;
       console.log(data);
       if (response.status === 200) {
-        toastify(`${data.customer_id} deleted succefully`);
+        toastify(data.message);
       } else {
-        toastify("Error deleting customer");
+        toastify(data.message);
         console.log(data);
       }
     } catch (error) {
@@ -36,10 +43,16 @@ function Customers() {
   };
 
   const getCustomers = async () => {
+    // Determine base API string
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_STRING}/customers`
-      );
+      const response = await axios.get(`${URL}/customers`);
       console.log(response);
       const data = response.data;
       if (response.status === 200) {

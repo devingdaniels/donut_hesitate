@@ -18,17 +18,21 @@ function EditCustomer() {
   const updateCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
-    console.log(updatedCustomer);
+
     if (
       updatedCustomer.customer_name !== location.state.customer_name ||
       updatedCustomer.email !== location.state.email ||
       updatedCustomer.phone_number !== location.state.phone_number
     ) {
+      let URL = "";
+      if (process.env.REACT_APP_MODE === "production") {
+        URL = process.env.REACT_APP_API_STRING_PRO;
+      } else {
+        // Build development string at localhost
+        URL = process.env.REACT_APP_API_STRING_DEV;
+      }
       try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_API_STRING}/customers`,
-          updatedCustomer
-        );
+        const response = await axios.put(`${URL}/customers`, updatedCustomer);
         const data = response.data;
         if (response.status === 200) {
           toastify(`CustomerID: ${updatedCustomer.customer_id} updated`);

@@ -1,31 +1,40 @@
 // Handle erros on async functions
 const asyncHandler = require("express-async-handler");
-
+const fakeData = require("../fakeData");
 const db = require("../config/db");
+require("dotenv").config();
 
 const getCustomers = asyncHandler(async (req, res) => {
-  console.log("backend/src/controllers/customerController");
-  const query = "SELECT * FROM Customers;";
-
-  db.pool.query(query, (err, results) => {
-    res.status(200).json(results);
-  });
+  console.log("backend/src/controllers/customerController/getCustomers");
+  if (process.env.MODE === "development") {
+    res.status(200).json(fakeData.customers);
+  } else {
+    const query = "SELECT * FROM Customers;";
+    db.pool.query(query, (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        res.status(200).json(results);
+      }
+    });
+  }
 });
 
 const createCustomer = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/customercontroller/createcustomer");
-  const { customer_name, email, phone_number } = req.body;
-
-  const query = `INSERT INTO Customers (customer_name, email, phone_number) VALUES ('${customer_name}', '${email}', '${phone_number}')`;
-
-  // Execute the SQL insert statement
-  db.pool.query(query, (err, result) => {
-    if (err) {
-      res.status(500).json({ error: err });
-    } else {
-      res.status(200).json({ message: "Customer added successfully" });
-    }
-  });
+  if (process.env.MODE === "development") {
+    res.status(200).json(fakeData.customers);
+  } else {
+    const { customer_name, email, phone_number } = req.body;
+    const query = `INSERT INTO Customers (customer_name, email, phone_number) VALUES ('${customer_name}', '${email}', '${phone_number}')`;
+    db.pool.query(query, (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        res.status(200).json({ message: "Customer added successfully" });
+      }
+    });
+  }
 });
 
 const editCustomer = asyncHandler(async (req, res) => {
@@ -46,16 +55,20 @@ const editCustomer = asyncHandler(async (req, res) => {
 
 const deleteCustomer = asyncHandler(async (req, res) => {
   console.log("backend/src/controllers/customercontroller/deletecustomer");
-  const { customer_id } = req.body;
-  const query = `DELETE FROM Customers WHERE Customers.customer_id = ${customer_id}`;
-  // Execute the SQL insert statement
-  db.pool.query(query, (err, result) => {
-    if (err) {
-      res.status(500).json({ error: err });
-    } else {
-      res.status(200).json({ customer_id: customer_id });
-    }
-  });
+  if (process.env.MODE === "development") {
+    res.status(200).json({ message: "Succesful delete in DEV" });
+  } else {
+    const { customer_id } = req.body;
+    const query = `DELETE FROM Customers WHERE Customers.customer_id = ${customer_id}`;
+    // Execute the SQL insert statement
+    db.pool.query(query, (err, result) => {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        res.status(200).json({ customer_id: customer_id });
+      }
+    });
+  }
 });
 
 module.exports = {
