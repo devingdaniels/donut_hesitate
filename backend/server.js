@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/donuts", require("./src/routes/donutRoutes"));
 app.use("/api/customers", require("./src/routes/customerRoutes"));
 app.use("/api/employees", require("./src/routes/employeeRoutes"));
-app.use("/api/sales", require("./src/routes/salesRoutes"));
+app.use("/api/sales", require("./src/routes/saleRoutes"));
 // Error middleware needs to be last .use()
 // Called when there is an error on get, put, post, delete routes in /backend/src/controller
 app.use(errorHandler);

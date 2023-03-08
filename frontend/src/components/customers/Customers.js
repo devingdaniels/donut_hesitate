@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineEdit } from "react-icons/ai";
-import { AiOutlineDelete } from "react-icons/ai";
-import AddCustomer from "./AddCustomer";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { toastify } from "../../utilities/toastify";
+import AddCustomer from "./AddCustomer";
 import axios from "axios";
 
 function Customers() {
@@ -11,7 +10,6 @@ function Customers() {
   const [customers, setCustomers] = useState([]);
 
   const editCustomer = (customer) => {
-    console.log("before Navigate: ", customer);
     navigate("edit-customer", { state: customer });
   };
 
@@ -53,14 +51,12 @@ function Customers() {
     }
     try {
       const response = await axios.get(`${URL}/customers`);
-      console.log(response);
       const data = response.data;
       if (response.status === 200) {
         setCustomers(data);
       } else {
-        toastify("Error getting customers in backend");
+        toastify(`${response.status}: ${response.message}`);
       }
-      console.log(data);
     } catch (error) {
       console.error(error);
     }

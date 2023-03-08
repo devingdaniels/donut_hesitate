@@ -1,44 +1,39 @@
-// Handle erros on async functions
+require("dotenv").config();
 const asyncHandler = require("express-async-handler");
 const fakeData = require("../fakeData");
-const db = require("../config/db");
-require("dotenv").config();
+const Customer = require("../models/customerModel");
 
 const getCustomers = asyncHandler(async (req, res) => {
-  console.log("backend/src/controllers/customerController/getCustomers");
   if (process.env.MODE === "development") {
     res.status(200).json(fakeData.customers);
   } else {
-    const query = "SELECT * FROM Customers;";
-    db.pool.query(query, (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err });
-      } else {
-        res.status(200).json(results);
-      }
-    });
+    try {
+      const customers = await Customer.getCustomers();
+      res.status(200).json(customers);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: "Server Error" });
+    }
   }
 });
 
 const createCustomer = asyncHandler(async (req, res) => {
-  console.log("backend/src/controllers/customercontroller/createcustomer");
   if (process.env.MODE === "development") {
     res.status(200).json(fakeData.customers);
   } else {
-    const { customer_name, email, phone_number } = req.body;
-    const query = `INSERT INTO Customers (customer_name, email, phone_number) VALUES ('${customer_name}', '${email}', '${phone_number}')`;
-    db.pool.query(query, (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err });
-      } else {
-        res.status(200).json({ message: "Customer added successfully" });
-      }
-    });
+    try {
+      const { customer_name, email, phone_number } = req.body;
+      const status = Customer.createCustomer(
+        customer_name,
+        email,
+        phone_number
+      );
+      res.status(200).json({ message: "Customer added successfully" });
+    } catch (error) {}
   }
 });
 
 const editCustomer = asyncHandler(async (req, res) => {
-  console.log("backend/src/controllers/customercontroller/editcustomer");
   const { customer_id, customer_name, email, phone_number } = req.body;
   console.log(customer_id, customer_name, email, phone_number);
 
@@ -54,7 +49,6 @@ const editCustomer = asyncHandler(async (req, res) => {
 });
 
 const deleteCustomer = asyncHandler(async (req, res) => {
-  console.log("backend/src/controllers/customercontroller/deletecustomer");
   if (process.env.MODE === "development") {
     res.status(200).json({ message: "Succesful delete in DEV" });
   } else {
