@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toastify } from "../../utilities/toastify";
 
-function AddDonut() {
+function AddDonut({ getDonuts }) {
   const [donut, setDonut] = useState({
     donut_name: "",
     donut_price: "",
@@ -11,25 +11,30 @@ function AddDonut() {
   const addDonut = async (e) => {
     // Prevent page reload
     e.preventDefault();
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
-      const response = await axios.post(
-        `http://localhost:8543/api/donuts/`,
-        donut
-      );
-      if (response.status === 200) {
+      const response = await axios.post(`${URL}/donuts`, donut);
+      if (response.status === 201) {
         const data = response.data;
-        toastify(`${donut.donut_name} successfully added.`);
+        toastify(data.message);
       } else {
         console.log(response.status);
       }
     } catch (error) {
-      toastify(`Error adding: ${donut.donut_name}`);
       console.error(error);
     }
     setDonut({
       donut_name: "",
       donut_price: "",
     });
+    // Get the updated list
+    getDonuts();
   };
 
   return (

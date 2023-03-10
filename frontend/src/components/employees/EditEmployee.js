@@ -19,14 +19,22 @@ function EditEmployee() {
     e.preventDefault();
 
     if (updatedEmployee.employee_name !== location.state.employee_name) {
-      toastify(`Updating ${updatedEmployee.employee_name}...`);
+      let URL = "";
+      if (process.env.REACT_APP_MODE === "production") {
+        URL = process.env.REACT_APP_API_STRING_PRO;
+      } else {
+        // Build development string at localhost
+        URL = process.env.REACT_APP_API_STRING_DEV;
+      }
       try {
-        const response = await axios.put(
-          `http://localhost:8543/api/employees/`,
-          updatedEmployee
-        );
+        const response = await axios.put(`${URL}/employees/`, updatedEmployee);
         const data = response.data;
-        console.log(data);
+        if (response.status === 200) {
+          toastify(data.message);
+        } else {
+          console.log(data);
+          toastify(data.message);
+        }
       } catch (error) {
         console.error(error);
       }

@@ -35,7 +35,8 @@ function EditCustomer() {
         const response = await axios.put(`${URL}/customers`, updatedCustomer);
         const data = response.data;
         if (response.status === 200) {
-          toastify(`CustomerID: ${updatedCustomer.customer_id} updated`);
+          console.log(data.message);
+          toastify(`Customer with ID: ${updatedCustomer.customer_id} updated`);
         } else {
           toastify(
             `Error updating customer with ID: ${updatedCustomer.customer_id}`
@@ -83,8 +84,9 @@ function EditCustomer() {
           required
         ></input>
         <input
-          type="text"
           defaultValue={location.state.phone_number}
+          type="tel"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           onChange={(e) =>
             setUpdatedCustomer({
               ...updatedCustomer,

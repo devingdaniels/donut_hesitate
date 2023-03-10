@@ -27,11 +27,10 @@ function Customers() {
         { data: customer }
       );
       const data = response.data;
-      console.log(data);
       if (response.status === 200) {
-        toastify(data.message);
+        toastify(`Customer with ID: ${data.customer_id} deleted`);
       } else {
-        toastify(data.message);
+        toastify(`${data.customer_id} not deleted`);
         console.log(data);
       }
     } catch (error) {

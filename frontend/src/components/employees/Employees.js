@@ -15,25 +15,44 @@ function Employees() {
   };
 
   const deleteEmployee = async (employee) => {
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
       const response = await axios.delete(
-        `http://localhost:8543/api/employees/${employee.employee_id}`,
+        `${URL}/employees/${employee.employee_id}`,
         { data: employee }
       );
       const data = response.data;
-      toastify(`Deleting ${data.employee_name} (${data.employee_id})...`);
-      console.log(data);
+      if (response.status === 200) {
+        toastify(data.message);
+        console.log(data);
+      } else {
+        toastify(data.message);
+        console.log(data.message);
+      }
     } catch (error) {
-      toastify(
-        `Error deleting ${employee.employee_name} (${employee.employee_id})...`
-      );
+      toastify(error);
       console.error(error);
     }
+    // Update the UI
+    getEmployees();
   };
 
   const getEmployees = async () => {
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
-      const response = await axios.get("http://localhost:8543/api/employees");
+      const response = await axios.get(`${URL}/employees`);
       const data = response.data;
       setEmployees(data);
     } catch (error) {
@@ -64,7 +83,7 @@ function Employees() {
               <tr key={employee.employee_id}>
                 <td>{employee.employee_id}</td>
                 <td>{employee.employee_name}</td>
-                <td>{employee.shift_worked}</td>
+                <td>{employee.shift_worked.toString().substring(0, 10)}</td>
                 <td onClick={() => editEmployee(employee)}>
                   <AiOutlineEdit size={"25px"} className="edit-row-icon" />
                 </td>
@@ -77,7 +96,7 @@ function Employees() {
         </table>
       </section>
       <section>
-        <AddEmployee />
+        <AddEmployee getEmployees={getEmployees} />
       </section>
     </div>
   );

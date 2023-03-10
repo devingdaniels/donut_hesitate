@@ -3,7 +3,7 @@ import { toastify } from "../../utilities/toastify";
 
 import axios from "axios";
 
-function AddEmployee() {
+function AddEmployee({ getEmployees }) {
   const [employee, setEmployee] = useState({
     employee_name: "",
     shift_worked: "",
@@ -12,19 +12,21 @@ function AddEmployee() {
   const addEmployee = async (e) => {
     // Prevent page reload
     e.preventDefault();
-
+    let URL = "";
+    if (process.env.REACT_APP_MODE === "production") {
+      URL = process.env.REACT_APP_API_STRING_PRO;
+    } else {
+      // Build development string at localhost
+      URL = process.env.REACT_APP_API_STRING_DEV;
+    }
     try {
-      const response = await axios.post(
-        `http://localhost:8543/api/employees/`,
-        employee
-      );
+      const response = await axios.post(`${URL}/employees`, employee);
       const data = response.data;
-      if (response.status === 200) {
-        toastify(`Successfully added ${data.employee_name}...`);
+      if (response.status === 201) {
+        toastify(`${employee.employee_name} ${data.message}`);
       } else {
-        toastify(`Error addeding ${employee.employee_name}...`);
+        toastify(`Error adding ${employee.employee_name}...`);
       }
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -32,6 +34,8 @@ function AddEmployee() {
       employee_name: "",
       shift_worked: "",
     });
+    // Get updated list
+    getEmployees();
   };
 
   return (
@@ -47,6 +51,7 @@ function AddEmployee() {
           required
         ></input>
         <input
+          type="date"
           placeholder="shift_worked..."
           value={employee.shift_worked}
           onChange={(e) =>

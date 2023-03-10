@@ -20,14 +20,19 @@ function EditDonut() {
       updatedDonut.donut_name !== location.state.donut_name ||
       updatedDonut.price !== location.state.price
     ) {
+      // Determine base API string
+      let URL = "";
+      if (process.env.REACT_APP_MODE === "production") {
+        URL = process.env.REACT_APP_API_STRING_PRO;
+      } else {
+        // Build development string at localhost
+        URL = process.env.REACT_APP_API_STRING_DEV;
+      }
       try {
-        const response = await axios.put(
-          `http://localhost:8543/api/donuts/`,
-          updatedDonut
-        );
+        const response = await axios.put(`${URL}/donuts`, updatedDonut);
         const data = response.data;
         if (response.status === 200) {
-          toastify(`${data.donut_name} (${data.donut_id}) updated succefully`);
+          toastify(`Donut with ID: ${data.donut_id} ${data.message}`);
         } else {
           console.log(data);
           toastify(`Error updating ${data.donut_name} (${data.donut_id})`);
@@ -38,7 +43,7 @@ function EditDonut() {
     } else {
       toastify("No changes to save...");
     }
-
+    // Trigger reload
     navigate("/donuts");
   };
 
