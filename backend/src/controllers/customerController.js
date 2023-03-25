@@ -28,7 +28,12 @@ const createCustomer = asyncHandler(async (req, res) => {
       if (err) {
         res.status(500).json({ error: err });
       } else {
-        res.status(201).json({ message: "Customer added successfully" });
+        res
+          .status(201)
+          .json({
+            message: "Customer added successfully",
+            id: result.insertId,
+          });
       }
     });
   }

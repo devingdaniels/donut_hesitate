@@ -71,9 +71,9 @@ function Employees() {
         <table>
           <thead>
             <tr>
-              <th>employee_id</th>
-              <th>employee_name</th>
-              <th>shift_worked</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Date Worked</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>

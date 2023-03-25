@@ -70,9 +70,9 @@ function Donuts({}) {
         <table>
           <thead>
             <tr>
-              <th>donut_id</th>
-              <th>donut_name</th>
-              <th>price</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>

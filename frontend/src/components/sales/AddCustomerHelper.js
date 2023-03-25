@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { toastify } from "../../utilities/toastify";
-import axios from "axios";
 
-function AddCustomer({ fetchCustomers }) {
+function AddCustomer({ fetchCustomer }) {
   const [customer, setCustomer] = useState({
     customer_name: "",
     email: "",
@@ -12,33 +11,9 @@ function AddCustomer({ fetchCustomers }) {
   const addCustomer = async (e) => {
     // Prevent page reload
     e.preventDefault();
-    // Get the API base string
-    let URL = "";
-    if (process.env.REACT_APP_MODE === "production") {
-      URL = process.env.REACT_APP_API_STRING_PRO;
-    } else {
-      // Build development string at localhost
-      URL = process.env.REACT_APP_API_STRING_DEV;
-    }
-    try {
-      const response = await axios.post(`${URL}/customers`, customer);
-      const data = response.data;
-      if (response.status === 201) {
-        toastify(`${customer.customer_name} ${data.message}`);
-      } else {
-        toastify("New customer failed to insert.");
-        console.log(response.status);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setCustomer({
-      customer_name: "",
-      email: "",
-      phone_number: "",
-    });
-    // Get updated list of customers
-    fetchCustomers();
+    // Pass the customer to new sale
+    toastify("Customer will be added after sale creation");
+    fetchCustomer(customer);
   };
 
   return (

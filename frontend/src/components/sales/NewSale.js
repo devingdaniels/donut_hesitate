@@ -1,82 +1,78 @@
 import { useState, useEffect } from "react";
-import AddCustomer from "../customers/AddCustomer";
+import AddCustomer from "./AddCustomerHelper";
+import {
+  getCustomers,
+  getEmployees,
+  createCustomer,
+} from "../../helperFunctions";
 
-import { toastify } from "../../utilities/toastify";
-
-function NewSale({ addNewSale }) {
+function NewSale({ createSale }) {
   const [toggle, setToggle] = useState(false);
-
+  const [customers, setCustomers] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [newCustomer, setNewCustomer] = useState(null);
   const [sale, setSale] = useState({
     quantity_of_donuts_sold: "",
     purchase_date: "",
     sale_amount: "",
-    customer_id: "",
+    customer_id: null,
     employee_id: "",
   });
 
-  const [employees, setEmployees] = useState([
-    {
-      employee_id: "1",
-      employee_name: "John Doe",
-      shift_worked: "2022-12-20",
-    },
-    {
-      employee_id: "2",
-      employee_name: "Steve Doe",
-      shift_worked: "2022-12-12",
-    },
-    {
-      employee_id: "3",
-      employee_name: "Eva Doe",
-      shift_worked: "2022-12-20",
-    },
-  ]);
-
-  const [customers, setCustomers] = useState([
-    {
-      id: "0",
-      customer_name: "Guest",
-      email: "guest.guest@guest.com",
-      phone_number: "000000000",
-    },
-    {
-      id: "1",
-      customer_name: "Sarah Jane",
-      email: "Sarah.Jane@gmail.com",
-      phone_number: "541-456-7890",
-    },
-    {
-      id: "2",
-      customer_name: "Ralphy Johnson",
-      email: "Ralphy.Johnson@gmail.com",
-      phone_number: "987-123-7890",
-    },
-    {
-      id: "3",
-      customer_name: "Pickle Rick",
-      email: "Pickle.Rick@gmail.com",
-      phone_number: "625-123-4321",
-    },
-  ]);
-
-  const newSale = (e) => {
+  const handleSubmit = async (e) => {
     // Prevent page reload
     e.preventDefault();
-    alert("Add sale to DB");
-    addNewSale(sale);
+    // Determine if new customer was created or not
+
+    if (newCustomer === null && sale.customer_id === null) {
+      createSale(sale, null);
+    } else if (newCustomer !== null) {
+      const data = await createCustomer(newCustomer);
+      const ID = data.id;
+      createSale(sale, ID);
+    } else {
+      createSale(sale, sale.customer_id);
+    }
+    // Reset the form
+    setSale({
+      quantity_of_donuts_sold: "",
+      purchase_date: "",
+      sale_amount: "",
+      customer_id: null,
+      employee_id: employees[0].employee_id,
+    });
+  };
+
+  const fetchCustomer = (customer) => {
+    setNewCustomer(customer);
+    setToggle(!toggle);
   };
 
   useEffect(() => {
-    toastify("Add fetch for customers and employees");
+    const fetchCustomers = async () => {
+      const customers = await getCustomers();
+      setCustomers(customers);
+    };
+    const fetchEmployees = async () => {
+      const employees = await getEmployees();
+      setEmployees(employees);
+      console.log(employees.length);
+      if (employees.length > 0) {
+        setSale({ ...sale, employee_id: employees[0].employee_id });
+      }
+    };
+    fetchEmployees();
+    fetchCustomers();
   }, []);
 
   return (
     <div className="new-sale-form">
       <h2>New Sale</h2>
-      <form onSubmit={newSale} className="create-data-form">
+      <form onSubmit={handleSubmit} className="create-data-form">
         <input
           type="number"
-          placeholder="quantity_of_donuts_sold..."
+          placeholder="Quantity Sold..."
+          value={sale.quantity_of_donuts_sold}
           onChange={(e) =>
             setSale({ ...sale, quantity_of_donuts_sold: e.target.value })
           }
@@ -84,13 +80,15 @@ function NewSale({ addNewSale }) {
         ></input>
         <input
           type="date"
-          placeholder="purchase_date..."
+          placeholder="Purchase Date..."
+          value={sale.purchase_date}
           onChange={(e) => setSale({ ...sale, purchase_date: e.target.value })}
           required
         ></input>
         <input
           type="text"
-          placeholder="sale_amount..."
+          placeholder="Subtotal..."
+          value={sale.sale_amount}
           onChange={(e) => setSale({ ...sale, sale_amount: e.target.value })}
           required
         ></input>
@@ -101,12 +99,15 @@ function NewSale({ addNewSale }) {
               onChange={(e) =>
                 setSale({ ...sale, customer_id: e.target.value })
               }
-              required
+              defaultValue={sale.customer_id}
             >
               {customers.map((customer) => {
                 return (
-                  <option value={customer.id} key={customer.id}>
-                    {customer.customer_name} ({customer.id})
+                  <option
+                    value={customer.customer_id}
+                    key={customer.customer_id}
+                  >
+                    {customer.customer_name} ({customer.customer_id})
                   </option>
                 );
               })}
@@ -140,12 +141,13 @@ function NewSale({ addNewSale }) {
           <p>Employees</p>
           <select
             onChange={(e) => setSale({ ...sale, employee_id: e.target.value })}
+            defaultValue={sale.employee_id}
             required
           >
             {employees.map((employee) => {
               return (
                 <option value={employee.employee_id} key={employee.employee_id}>
-                  {employee.employee_name}
+                  {employee.employee_name} ({employee.employee_id})
                 </option>
               );
             })}
@@ -158,7 +160,7 @@ function NewSale({ addNewSale }) {
       <div>
         {toggle ? (
           <>
-            <AddCustomer />
+            <AddCustomer fetchCustomer={fetchCustomer} />
           </>
         ) : (
           <></>

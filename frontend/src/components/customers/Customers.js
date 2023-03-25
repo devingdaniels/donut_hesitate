@@ -4,6 +4,7 @@ import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { toastify } from "../../utilities/toastify";
 import AddCustomer from "./AddCustomer";
 import axios from "axios";
+import { getCustomers } from "../../helperFunctions";
 
 function Customers() {
   const navigate = useNavigate();
@@ -36,33 +37,16 @@ function Customers() {
     } catch (error) {
       console.error(error);
     }
-    getCustomers();
+    fetchCustomers();
   };
 
-  const getCustomers = async () => {
-    // Determine base API string
-    let URL = "";
-    if (process.env.REACT_APP_MODE === "production") {
-      URL = process.env.REACT_APP_API_STRING_PRO;
-    } else {
-      // Build development string at localhost
-      URL = process.env.REACT_APP_API_STRING_DEV;
-    }
-    try {
-      const response = await axios.get(`${URL}/customers`);
-      const data = response.data;
-      if (response.status === 200) {
-        setCustomers(data);
-      } else {
-        toastify(`${response.status}: ${response.message}`);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const fetchCustomers = async () => {
+    const customers = await getCustomers();
+    setCustomers(customers);
   };
 
   useEffect(() => {
-    getCustomers();
+    fetchCustomers();
   }, []);
 
   return (
@@ -72,10 +56,10 @@ function Customers() {
         <table>
           <thead>
             <tr>
-              <th>id</th>
-              <th>customer_name</th>
-              <th>email</th>
-              <th>phone_number</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -99,7 +83,7 @@ function Customers() {
         </table>
       </section>
       <section>
-        <AddCustomer getCustomers={getCustomers} />
+        <AddCustomer fetchCustomers={fetchCustomers} />
       </section>
     </div>
   );
